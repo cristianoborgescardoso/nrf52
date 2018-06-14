@@ -41,7 +41,10 @@ _build/nrf52832_xxaa/app_fifo.c.o: \
  ../../../../../../components/device/nrf51_to_nrf52.h \
  ../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../components/device/compiler_abstraction.h \
- ../../../../../../components/libraries/util/sdk_macros.h
+ ../../../../../../components/libraries/util/sdk_macros.h \
+ ../../../../../../components/libraries/fifo/app_fifo.h \
+ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\stdlib.h \
+ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\stdlib.h
 
 ../../../../../../components/libraries/util/sdk_common.h:
 
@@ -126,3 +129,9 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\string.h:
 ../../../../../../components/device/compiler_abstraction.h:
 
 ../../../../../../components/libraries/util/sdk_macros.h:
+
+../../../../../../components/libraries/fifo/app_fifo.h:
+
+d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\stdlib.h:
+
+d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\stdlib.h:

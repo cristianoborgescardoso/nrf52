@@ -21,6 +21,12 @@ _build/nrf52832_xxaa/app_util_platform.c.o: \
  ../../../../../../components/device/nrf51_to_nrf52.h \
  ../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../components/device/compiler_abstraction.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ d:\windows_app\5.4\ 2016q3\lib\gcc\arm-none-eabi\5.4.1\include\stdbool.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/libraries/util/app_error.h \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\stdio.h \
@@ -39,7 +45,6 @@ _build/nrf52832_xxaa/app_util_platform.c.o: \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\types.h \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\types.h \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\stdio.h \
- d:\windows_app\5.4\ 2016q3\lib\gcc\arm-none-eabi\5.4.1\include\stdbool.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
@@ -88,6 +93,18 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\_stdint.h:
 
 ../../../../../../components/device/compiler_abstraction.h:
 
+../../../../../../components/softdevice/s132/headers/nrf_soc.h:
+
+d:\windows_app\5.4\ 2016q3\lib\gcc\arm-none-eabi\5.4.1\include\stdbool.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_svc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_nvic.h:
+
 ../../../../../../components/libraries/util/nrf_assert.h:
 
 ../../../../../../components/libraries/util/app_error.h:
@@ -123,8 +140,6 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\types.h:
 d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\types.h:
 
 d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\stdio.h:
-
-d:\windows_app\5.4\ 2016q3\lib\gcc\arm-none-eabi\5.4.1\include\stdbool.h:
 
 ../../../../../../components/libraries/util/sdk_errors.h:
 

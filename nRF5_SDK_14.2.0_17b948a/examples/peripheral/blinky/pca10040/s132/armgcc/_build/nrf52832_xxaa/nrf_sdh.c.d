@@ -69,6 +69,7 @@ _build/nrf52832_xxaa/nrf_sdh.c.o: \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/libraries/experimental_log/nrf_log.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
+ ../../../../../../components/libraries/strerror/nrf_strerror.h \
  ../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h
 
 ../../../../../../components/libraries/util/sdk_common.h:
@@ -208,5 +209,7 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\stdio.h:
 ../../../../../../components/libraries/experimental_log/nrf_log.h:
 
 ../../../../../../components/libraries/experimental_section_vars/nrf_section.h:
+
+../../../../../../components/libraries/strerror/nrf_strerror.h:
 
 ../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h:

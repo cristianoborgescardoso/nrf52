@@ -52,10 +52,11 @@ _build/nrf52832_xxaa/app_error_weak.c.o: \
  ../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../components/libraries/util/nordic_common.h \
+ ../../../../../../components/libraries/strerror/nrf_strerror.h \
+ ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h \
  ../../../../../../components/libraries/util/app_util.h \
  ../../../../../../components/libraries/experimental_log/nrf_log_ctrl.h \
- ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/libraries/experimental_log/src/nrf_log_ctrl_internal.h \
  ../../../../../../components/libraries/experimental_log/nrf_log_backend_interface.h \
  ../../../../../../components/libraries/experimental_memobj/nrf_memobj.h \
@@ -63,8 +64,15 @@ _build/nrf52832_xxaa/app_error_weak.c.o: \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\stdlib.h \
  ../../../../../../components/libraries/balloc/nrf_balloc.h \
  ../../../../../../components/libraries/util/app_util_platform.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
- ../../../../../../components/libraries/strerror/nrf_strerror.h
+ ../../../../../../components/softdevice/s132/headers/nrf_sdm.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_sdm.h
 
 ../../../../../../components/libraries/util/app_error.h:
 
@@ -170,13 +178,15 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\string.h:
 
 ../../../../../../components/libraries/util/nordic_common.h:
 
+../../../../../../components/libraries/strerror/nrf_strerror.h:
+
+../../../../../../components/libraries/util/sdk_errors.h:
+
 ../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h:
 
 ../../../../../../components/libraries/util/app_util.h:
 
 ../../../../../../components/libraries/experimental_log/nrf_log_ctrl.h:
-
-../../../../../../components/libraries/util/sdk_errors.h:
 
 ../../../../../../components/libraries/experimental_log/src/nrf_log_ctrl_internal.h:
 
@@ -192,6 +202,20 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\machine\stdlib.h:
 
 ../../../../../../components/libraries/util/app_util_platform.h:
 
+../../../../../../components/softdevice/s132/headers/nrf_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_svc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_nvic.h:
+
 ../../../../../../components/libraries/util/nrf_assert.h:
 
-../../../../../../components/libraries/strerror/nrf_strerror.h:
+../../../../../../components/softdevice/s132/headers/nrf_sdm.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error_sdm.h:

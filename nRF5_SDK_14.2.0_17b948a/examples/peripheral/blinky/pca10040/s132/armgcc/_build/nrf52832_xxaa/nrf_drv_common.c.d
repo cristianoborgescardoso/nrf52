@@ -53,6 +53,11 @@ _build/nrf52832_xxaa/nrf_drv_common.c.o: \
  d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\stdio.h \
  ../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../components/libraries/util/app_util_platform.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_error.h \
+ ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
  ../../../../../../components/device/nrf52832_peripherals.h
@@ -162,6 +167,16 @@ d:\windows_app\5.4\ 2016q3\arm-none-eabi\include\sys\stdio.h:
 ../../../../../../components/libraries/util/app_error_weak.h:
 
 ../../../../../../components/libraries/util/app_util_platform.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_svc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error_soc.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_error.h:
+
+../../../../../../components/softdevice/s132/headers/nrf_nvic.h:
 
 ../../../../../../components/libraries/util/nrf_assert.h:
 
