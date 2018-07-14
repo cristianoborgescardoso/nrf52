@@ -76,6 +76,7 @@ Output/ble_app_uart_fusion_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../components/libraries/button/app_button.h \
  ../../../../../../components/libraries/bsp/bsp_btn_ble.h \
  ../../../../../../components/libraries/bsp/bsp.h \
+ D:\nRF5_SDK_14.2.0_17b948a\examples\ble_peripheral\ble_app_uart_fusion\uicr_config.h \
  ../../../../../../components/drivers_nrf/hal/nrf_uart.h \
  ../../../../../../components/drivers_nrf/hal/nrf_uarte.h \
  ../../../../../../components/libraries/experimental_log/nrf_log.h \

@@ -72,6 +72,9 @@
 #include "app_util_platform.h"
 #include "bsp_btn_ble.h"
 
+
+#include "uicr_config.h"
+
 #if defined (UART_PRESENT)
 #include "nrf_uart.h"
 #endif
@@ -82,6 +85,10 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
+
+static int GPIO_PIN_22_PREVIOUS_STATE = 0;
+static int GPIO_PIN_23_PREVIOUS_STATE = 0;
+static int GPIO_PIN_24_PREVIOUS_STATE = 0;
 
 
 //#define ENABLE_LOOPBACK_TEST  /**< if defined, then this example will be a loopback test, which means that TX should be connected to RX to get data loopback. */
@@ -173,6 +180,9 @@ static void uart_loopback_test()
 
 #define S_ON     1
 #define S_OFF    0
+
+
+
 
 //Forum1=https://devzone.nordicsemi.com/f/nordic-q-a/20971/hi-can-anyone-please-tell-me-on-how-to-read-the-digital-input-value-from-pir-sensor-in-nrf52832
 //------------------ From Forum1-END------------------
@@ -690,18 +700,72 @@ void uart_event_handle(app_uart_evt_t * p_event)
     }
 }
 
-void printToBLE(void) {
+void printToBLE(void) 
+{  
+  uint32_t err_code;
+  int pinCurrentValue = nrf_gpio_pin_read(GPIO_PIN_24);
 
- uint32_t err_code;
- if(nrf_gpio_pin_read(GPIO_PIN_24) == 0)
- {
-   unsigned char data_arr[] = {"P24=0"}; // 20 byte msg
-   err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
-   return;
- }
-  unsigned char data_arr[] = {"P24=1"}; // 20 byte msg
-  err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  if (GPIO_PIN_24_PREVIOUS_STATE == pinCurrentValue)
+  {
+      return;
+  }
+  GPIO_PIN_24_PREVIOUS_STATE = pinCurrentValue;
+
+  if (pinCurrentValue == 0) 
+  {
+    unsigned char data_arr[] = {"P24=0"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  } else 
+  {
+    unsigned char data_arr[] = {"P24=1"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  }
 }
+
+void printToBLE22(void) 
+{  
+  uint32_t err_code;
+  int pinCurrentValue = nrf_gpio_pin_read(GPIO_PIN_22);
+
+  if (GPIO_PIN_22_PREVIOUS_STATE == pinCurrentValue)
+  {
+      return;
+  }
+  GPIO_PIN_22_PREVIOUS_STATE = pinCurrentValue;
+
+  if (pinCurrentValue == 0) 
+  {
+    unsigned char data_arr[] = {"P22=0"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  } else 
+  {
+    unsigned char data_arr[] = {"P22=1"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  }
+}
+
+void printToBLE23(void) 
+{  
+  uint32_t err_code;
+  int pinCurrentValue = nrf_gpio_pin_read(GPIO_PIN_23);
+
+  if (GPIO_PIN_23_PREVIOUS_STATE == pinCurrentValue)
+  {
+      return;
+  }
+  GPIO_PIN_23_PREVIOUS_STATE = pinCurrentValue;
+
+  if (pinCurrentValue == 0) 
+  {
+    unsigned char data_arr[] = {"P23=0"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  } else 
+  {
+    unsigned char data_arr[] = {"P23=1"}; // 20 byte msg
+    err_code = ble_nus_string_send(&m_nus, data_arr, strlen(data_arr));
+  }
+}
+
 /**@snippet [Handling the data received over UART] */
 
 
@@ -854,10 +918,90 @@ void printSensorState(void) {
 }
 
 
+//from: https://devzone.nordicsemi.com/f/nordic-q-a/34262/system-reset-after-uicr-erase-and-write-leads-to-system-off/131879#131879  
+void updateUICR(void)
+{  //Storage buffers and variables to hold the UICR register content
+   printf("Storage buffers and variables to hold the UICR register content\n");
+        static uint32_t uicr_buffer[100]   = {0x00000000};
+        static uint32_t pselreset_0        = 0x00000000;
+        static uint32_t pselreset_1        = 0x00000000;
+        static uint32_t approtect          = 0x00000000;
+        static uint32_t nfcpins            = 0x00000000;
+
+        static uint32_t uicr_address_start = 0x10001080;//0x10001000//+100=163c//+100=1c78//From readucir: 10100000
+        
+
+        //CRITICAL_REGION_ENTER();
+        //Read and buffer UICR register content prior to erase 
+        printf("Read and buffer UICR register content prior to erase\n");
+        //uint32_t uicr_address = 0x10001014;
+        uint32_t uicr_address = uicr_address_start;  
+ 
+        for(int i = 0; i < sizeof(uicr_buffer); i++)
+        {
+            uicr_buffer[i] = *(uint32_t *)uicr_address; 
+            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+            //Set UICR address to the next register
+            //printf("3\n");
+            uicr_address += 0x04;
+        }
+      
+        pselreset_0 = NRF_UICR->PSELRESET[0];
+        pselreset_1 = NRF_UICR->PSELRESET[1];
+        approtect   = NRF_UICR->APPROTECT;
+        nfcpins     = NRF_UICR->NFCPINS;
+        
+        printf("Modify the Bootloader start address  to correspond to the new bootloader\n");
+        //uicr_buffer[0] = 0x00078000;
+       
+        printf("Enable Erase mode\n");
+        //NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Een << NVMC_CONFIG_WEN_Pos; //0x02; 
+       // while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+        
+        printf("Erase the UICR registers\n");
+        //NRF_NVMC->ERASEUICR = NVMC_ERASEUICR_ERASEUICR_Erase << NVMC_ERASEUICR_ERASEUICR_Pos; //0x00000001;
+        //while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+       
+        printf("Enable WRITE mode\n");
+        //NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos; //0x01;
+        //while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
+   
+        printf("Write the modified UICR content back to the UICR registers\n");nrf_delay_ms(100);
+        //uicr_address = 0x10001014;
+        uicr_address = uicr_address_start; 
+
+        for(int j = 0; j<sizeof(uicr_buffer); j++)
+        {
+            //printf("Skip writing to registers that were 0xFFFFFFFF before the UICR register were erased.\n");
+            printf("Register: '%x' = '%x'\n",uicr_address, uicr_buffer[j]);nrf_delay_ms(10);
+            if(uicr_buffer[j] != 0xFFFFFFFF)
+            {
+                 //printf("Register: '%x' = '%x'\n",uicr_address, uicr_buffer[j]);nrf_delay_ms(10);
+                 //printf("Register: '%d' = '%d'\n",uicr_address, uicr_buffer[j]);nrf_delay_ms(100);
+                //printf(uicr_buffer[j])
+                //*(uint32_t *)uicr_address = uicr_buffer[j];
+                //printf("Wait untill the NVMC peripheral has finished writting to the UICR register\n"); nrf_delay_ms(100);
+                while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}                
+            }
+            //printf("Set UICR address to the next register\n"); nrf_delay_ms(100);
+            uicr_address += 0x04;  
+        }
+
+        //NRF_UICR->PSELRESET[0]  = pselreset_0;
+        //NRF_UICR->PSELRESET[1]  = pselreset_1;
+        //NRF_UICR->APPROTECT     = approtect;
+        //NRF_UICR->NFCPINS       = nfcpins;
+
+       //CRITICAL_REGION_EXIT();
+}
+
 /**@brief Application main function.
  */
 int main(void)
 {
+
+    
+    
     int i = 0;
     uint32_t err_code;
     bool     erase_bonds;
@@ -883,6 +1027,8 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 
     startSensors();
+   
+    updateUICR();
 
     // Enter main loop.
     for (;;)
@@ -890,7 +1036,10 @@ int main(void)
         nrf_delay_ms(1000);
         bsp_board_led_invert(1);
         printToBLE();
+        printToBLE22();
+        printToBLE23();
         printf(" \r\nping%d...\r\n",i);
+       // printf(" \r\nUICR_ADDR_0x80  '%d'\n",UICR_ADDR_0x80);
         printSensorState();
         UNUSED_RETURN_VALUE(NRF_LOG_PROCESS());
         power_manage();
