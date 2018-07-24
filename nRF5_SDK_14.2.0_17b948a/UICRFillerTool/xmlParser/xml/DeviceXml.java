@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class DeviceXml {
 
     @XmlElement(required = true)
-    protected int id;
+    protected BigInteger id;
     @XmlElement(required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
@@ -72,7 +72,7 @@ public class DeviceXml {
      *     {@link BigInteger }
      *     
      */
-    public int getId() {
+    public BigInteger getId() {
         return id;
     }
 
@@ -84,7 +84,7 @@ public class DeviceXml {
      *     {@link BigInteger }
      *     
      */
-    public void setId(int value) {
+    public void setId(BigInteger value) {
         this.id = value;
     }
 
@@ -158,12 +158,6 @@ public class DeviceXml {
      */
     public void setIoClass(String value) {
         this.ioClass = value;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return description;
     }
 
 }

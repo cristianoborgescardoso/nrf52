@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public class UICRFillerTool
 {
-
     private List<Device> deviceList = new ArrayList<>();
     private final static int hexZero = 0x00000000;
 

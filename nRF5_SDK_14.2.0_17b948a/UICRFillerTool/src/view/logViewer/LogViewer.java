@@ -5,24 +5,27 @@
  */
 package view.logViewer;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import uicrfillertool.Device;
+import util.Config;
 import xml.DeviceXmls;
 
 /**
@@ -53,7 +56,7 @@ public class LogViewer extends javax.swing.JFrame
         this.labelTextFontSize = labelTextFontSize;
         this.labelTitleFontSize = labelTitleFontSize;
         this.labelPanelColumNumber = labelPanelColumNumber;
-        
+
         createLabelPanel("Device Panel");
         //createChartAndPanel("BLA");
         //labelPanelContainer.setLayout(new java.awt.GridLayout(2, 1, 2, 2));
@@ -63,14 +66,14 @@ public class LogViewer extends javax.swing.JFrame
 
     private void fillDeviceList()
     {
-        
+
     }
-    
+
     public Device getFalseNode(String ID)
     {
         return deviceMap.get(Integer.valueOf(ID));
     }
-    
+
     public void createLabelPanel(String tableName)
     {
         //     internalDesktop.setLayout(new java.awt.BorderLayout());
@@ -83,35 +86,47 @@ public class LogViewer extends javax.swing.JFrame
         jspNodes.getLeftComponent().revalidate();
 //        labelPanelContainer.revalidate();
     }
-    
+
     public GenericLabelPanel getLabelPanel()
     {
         return labelPanel;
     }
-    
+
     public JSplitPane getJSplitPane1()
     {
         return jspNodes;
     }
-    
+
     public JSplitPane getJSplitPane2()
     {
         return jSplitPane2;
     }
-    
+
     public static void appendLog(String log)
     {
         TALOG.append(log);
         TALOG.append("\n");
     }
-    
+
+    public static void appendLog(String log, StackTraceElement[] stackTraceElements)
+    {
+        TALOG.append(log);
+        TALOG.append("\n");
+
+        for (StackTraceElement element : stackTraceElements)
+        {
+            TALOG.append(element.toString());
+            TALOG.append("\n");
+        }
+    }
+
     private void updateLabelPanel(List<Device> deviceNodes)
     {
         try
-        {            
+        {
             if (labelPanel == null)
             {
-                createLabelPanel("Localization Log");
+                createLabelPanel("Devices");
             }
             labelPanel.getPanellFiller().notifySerieUpdate(deviceNodes);
         }
@@ -175,7 +190,7 @@ public class LogViewer extends javax.swing.JFrame
 
         jSplitPane2.setRightComponent(jScrollPane2);
 
-        tfFilePath.setText("D:\\netbeans\\XmlTest\\stock2.xml");
+        tfFilePath.setText("thirdyParty/devices.xml");
         tfFilePath.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -269,7 +284,14 @@ public class LogViewer extends javax.swing.JFrame
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.dir")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            tfFilePath.setText(chooser.getSelectedFile().getPath());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
@@ -280,6 +302,13 @@ public class LogViewer extends javax.swing.JFrame
         }
         catch (FileNotFoundException ex)
         {
+            appendLog("File not found: " + tfFilePath.getText());
+            Logger.getLogger(LogViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (JAXBException ex)
+        {
+            appendLog("Error while parsing XML file ", ex.getStackTrace());
+
             Logger.getLogger(LogViewer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -296,7 +325,7 @@ public class LogViewer extends javax.swing.JFrame
 
     private void cbInternalGridColumsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cbInternalGridColumsActionPerformed
     {//GEN-HEADEREND:event_cbInternalGridColumsActionPerformed
-        
+
         updateInternalPanelsColumNumber();
     }//GEN-LAST:event_cbInternalGridColumsActionPerformed
 
@@ -315,7 +344,7 @@ public class LogViewer extends javax.swing.JFrame
         labelPanel.setLayout(new java.awt.GridLayout(0, Integer.valueOf(cbInternalGridColums.getSelectedItem().toString()), 2, 2));
         labelPanel.revalidate();
     }
-    
+
     private void updateReferencePanelsColumNumber()
     {
 //        labelPanel.setLayout(new java.awt.GridLayout(0, Integer.valueOf(cbReferenceGridColums.getSelectedItem().toString()), 2, 2));
@@ -323,144 +352,100 @@ public class LogViewer extends javax.swing.JFrame
 //        chartAndLabelPanel.getLabelPanel().setLayout(new java.awt.GridLayout(0, getReferenceGridColumNumber(), 1, 1));
 //        chartAndLabelPanel.getLabelPanel().revalidate();
     }
-    
+
     public int getReferenceGridColumNumber()
     {
 //        return Integer.valueOf(cbReferenceGridColums.getSelectedItem().toString());
         return 2;
     }
-    
-    private void openFile(String filePath) throws FileNotFoundException
-    {
-        
-        InputStream arquivoDeTexto = new FileInputStream(filePath);
-        if (arquivoDeTexto != null)
-        {
-            BufferedReader leitor = null;
-            try
-            {
-                leitor = new BufferedReader(new InputStreamReader(arquivoDeTexto, "UTF-8"));
-                // String linha = null; 
-                try
-                {
-                    Device tempdevice;
-                    deviceMap = new HashMap<>();
-                    tempdevice = new Device(100, 0, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);                    
-                    tempdevice = new Device(1, 1, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 2, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 3, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 4, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 5, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 6, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);                    
-                    tempdevice = new Device(35, 7, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 8, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 9, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 10, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 11, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 12, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 13, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 14, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 15, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 16, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 17, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 18, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 19, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 20, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 21, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 22, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 23, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(1, 24, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(255, 25, 255);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 26, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 27, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 28, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(35, 29, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(55, 30, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
-                    tempdevice = new Device(9, 31, 0);
-                    deviceMap.put(tempdevice.getPinNumber(), tempdevice);
 
-                    //Device.fillRegistryBytes(new ArrayList<>(deviceMap.values())); 
-                    // while (leitor.ready())
-                    // {
-                    //      tempFalseNode = logParser.unmarshal(leitor.readLine());
-                    //      deviceMap.put(tempFalseNode.ID, tempFalseNode);
-                    //  }
-                    updateLabelPanel(new ArrayList<>(deviceMap.values()));
-                    jspNodes.getLeftComponent().revalidate();
-                }
-                catch (Exception ex)
-//                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-//                        Mensagem.error.log(ex);
-                }
-                finally
-                {
-                    try
-                    {
-                        arquivoDeTexto.close();
-                    }
-                    catch (IOException ex)
-                    {
-                        ex.printStackTrace();
-//                            Mensagem.error.log(ex);
-                    }
-                }
-            }
-            catch (UnsupportedEncodingException ex)
-            {
-                ex.printStackTrace();
-//                    Mensagem.error.log(ex);
-            }
-            finally
-            {
-                try
-                {
-                    if (leitor != null)
-                    {
-                        leitor.close();
-                    }
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-//                        Mensagem.error.log(ex);
-                }
-            }
+    private void openFile(String filePath) throws FileNotFoundException, JAXBException
+    {
+        //InputStream arquivoDeTexto = new FileInputStream(filePath);
+        JAXBContext jaxbContext = JAXBContext.newInstance(DeviceXmls.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        DeviceXmls devices = (DeviceXmls) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream("devices.xml"), StandardCharsets.UTF_8));
+
+        Config.inputDevices = devices.getInputDevicesXml().getDeviceXml();
+        Config.outputDevices = devices.getOutputDevicesXml().getDeviceXml();
+
+        for (int sensorNumber = 0; sensorNumber < Config.maxSensorNumber; sensorNumber++)
+        {
+
         }
+
+        Device tempdevice;
+        deviceMap = new HashMap<>();
+        tempdevice = new Device(100, 0, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 1, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 2, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 3, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 4, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 5, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 6, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 7, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 8, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 9, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 10, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 11, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 12, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 13, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 14, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 15, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 16, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 17, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 18, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 19, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 20, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 21, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 22, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 23, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(1, 24, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(255, 25, 255);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 26, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 27, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 28, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(35, 29, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(55, 30, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+        tempdevice = new Device(9, 31, 0);
+        deviceMap.put(tempdevice.getPinNumber(), tempdevice);
+
+        updateLabelPanel(new ArrayList<>(deviceMap.values()));
+        jspNodes.getLeftComponent().revalidate();
+
     }
-    
+
     private void sleep100()
     {
         try

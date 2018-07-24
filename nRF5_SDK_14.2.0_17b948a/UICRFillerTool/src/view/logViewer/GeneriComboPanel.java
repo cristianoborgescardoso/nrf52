@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 import uicrfillertool.Device;
+import util.Config;
+import xml.DeviceXml;
+import xml.DeviceXmls;
 
 /**
  *
@@ -21,7 +25,8 @@ public class GeneriComboPanel extends javax.swing.JPanel implements LabelFillerC
 
     private final String enable = "Enable";
     private final String disable = "Disable";
-
+    private final String input = "Input";
+    private final String output = "Output";
     /**
      * Creates new form TempLabelPanel
      */
@@ -105,11 +110,11 @@ public class GeneriComboPanel extends javax.swing.JPanel implements LabelFillerC
             tempDevice = deviceMap.get(this.title);
             if (tempDevice == null)
             {
-                deviceMap.put(this.title, new Device(cbName.getSelectedIndex(), this.title, cbInput.getSelectedIndex()));//cbInput: 0 = input; 1 = output
+                deviceMap.put(this.title, new Device(((DeviceXml)cbName.getSelectedItem()).getId(), this.title, cbInput.getSelectedIndex()));//cbInput: 0 = input; 1 = output
             }
             else
             {
-                tempDevice.setDeviceName(cbName.getSelectedIndex());
+                tempDevice.setDeviceName(((DeviceXml)cbName.getSelectedItem()).getId());
                 tempDevice.setPinFunction(cbInput.getSelectedIndex());
             }
         }
@@ -122,6 +127,19 @@ public class GeneriComboPanel extends javax.swing.JPanel implements LabelFillerC
     public static List<Device> getDeviceList()
     {
         return new ArrayList<>(deviceMap.values());
+    }
+
+    private void updateCbNames()
+    {
+        if (String.valueOf(cbInput.getSelectedItem()).equalsIgnoreCase(input))
+        {
+            cbName.setModel(new DefaultComboBoxModel((Config.inputDevices.toArray())));
+        }
+        else
+        {
+            cbName.setModel(new DefaultComboBoxModel((Config.outputDevices.toArray())));
+        }
+
     }
 
     /**
@@ -189,11 +207,13 @@ public class GeneriComboPanel extends javax.swing.JPanel implements LabelFillerC
     private void cbEnableActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cbEnableActionPerformed
     {//GEN-HEADEREND:event_cbEnableActionPerformed
         setNextOthersComboBoxEnable(String.valueOf(cbEnable.getSelectedItem()).equalsIgnoreCase(enable));
+        updateCbNames();
         updateDevice(String.valueOf(cbEnable.getSelectedItem()).equalsIgnoreCase(enable));
     }//GEN-LAST:event_cbEnableActionPerformed
 
     private void cbInputActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cbInputActionPerformed
     {//GEN-HEADEREND:event_cbInputActionPerformed
+        updateCbNames();
         updateDevice(true);
     }//GEN-LAST:event_cbInputActionPerformed
 
