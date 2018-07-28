@@ -18,6 +18,9 @@ public class Config
     public static int maxSensorNumber = 32;
     public static List<DeviceXml> inputDevices;
     public static List<DeviceXml> outputDevices;
+    public static final int uicr_address_start = 0x10001080;
+    public static final int uicr_address_offset = 0x04;
+    public static final String eraseUICR = "nrfjprog -f NRF52 --eraseuicr";
 
     public static enum IOCLASS
     {

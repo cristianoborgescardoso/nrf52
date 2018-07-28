@@ -5,9 +5,11 @@
  */
 package view.logViewer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -16,7 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -26,6 +30,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import uicrfillertool.Device;
 import util.Config;
+import static view.logViewer.LogViewer.appendLog;
 import xml.DeviceXmls;
 
 /**
@@ -42,6 +47,7 @@ public class LogViewer extends javax.swing.JFrame
     private final int labelPanelColumNumber;
     public Map<Integer, Device> deviceMap = new HashMap<>();
     private static JTextArea TALOG;
+    private static JScrollBar JSCROLLPANE;
 
     /**
      * Creates new form ChartAndTableVoltage
@@ -62,6 +68,8 @@ public class LogViewer extends javax.swing.JFrame
         //labelPanelContainer.setLayout(new java.awt.GridLayout(2, 1, 2, 2));
         //revalidate();
         TALOG = taLog;
+        JSCROLLPANE = this.jScrollPane2.getVerticalScrollBar();
+        JSCROLLPANE.setValue(JSCROLLPANE.getMaximum());
     }
 
     private void fillDeviceList()
@@ -106,17 +114,16 @@ public class LogViewer extends javax.swing.JFrame
     {
         TALOG.append(log);
         TALOG.append("\n");
+        JSCROLLPANE.setValue(JSCROLLPANE.getMaximum());
     }
 
     public static void appendLog(String log, StackTraceElement[] stackTraceElements)
     {
-        TALOG.append(log);
-        TALOG.append("\n");
+        appendLog(log);
 
         for (StackTraceElement element : stackTraceElements)
         {
-            TALOG.append(element.toString());
-            TALOG.append("\n");
+            appendLog(element.toString());
         }
     }
 
@@ -139,8 +146,71 @@ public class LogViewer extends javax.swing.JFrame
 
     private void flashBoard()
     {
+        StringBuilder commandLines = new StringBuilder();
+        appendLog("Encoding devices configuration...");
+        fillRegistryBytes();
+
+        appendLog("Erasing UICR...");
+        runCommandLines(Config.eraseUICR);
+        commandLines.append(Config.eraseUICR);
+
+        appendLog("Writing UICR Registers...");
+        int memoryAddress = Config.uicr_address_start;
+        for (Device device : GeneriComboPanel.getDeviceList())
+        {
+            runCommandLines(String.format("nrfjprog  -f NRF52  --memwr 0x%x --val 0x%x", memoryAddress, device.getRegistryValueInHex()));
+            memoryAddress += Config.uicr_address_offset;
+        }
+
+        appendLog("Reading UICR Registers...");
+        memoryAddress = Config.uicr_address_start;
+        for (int deviceNumber = 0; deviceNumber < 32; deviceNumber++)
+        {
+            runCommandLineSynchronized(String.format("nrfjprog -f NRF52 --memrd 0x%x --n 4", memoryAddress));
+            memoryAddress += Config.uicr_address_offset;
+        }
+    }
+
+    private void fillRegistryBytes()
+    {
         LogViewer.appendLog(String.format("Generating command lines..."));
         Device.fillRegistryBytes(GeneriComboPanel.getDeviceList());
+    }
+
+    private void runCommandLines(String commandLine)
+    {
+        try
+        {
+            appendLog(String.format("Running command: '$ %s'", commandLine));
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec(commandLine);
+            appendLog(new BufferedReader(new InputStreamReader(pr.getErrorStream())).lines().collect(Collectors.joining("\n")));
+            appendLog(new BufferedReader(new InputStreamReader(pr.getInputStream())).lines().collect(Collectors.joining("\n")));
+
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(LogViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void runCommandLineSynchronized(String commandLine)
+    {
+        new RunCommand(commandLine).start();
+
+//        try
+//        {
+//            appendLog(String.format("Running command: '$ %s'", commandLine));
+//            Runtime rt = Runtime.getRuntime();
+//            Process pr = rt.exec(commandLine);
+//            appendLog(new BufferedReader(new InputStreamReader(pr.getErrorStream())).lines().collect(Collectors.joining("\n")));
+//            appendLog(new BufferedReader(new InputStreamReader(pr.getInputStream())).lines().collect(Collectors.joining("\n")));
+//
+//        }
+//        catch (IOException ex)
+//        {
+//            Logger.getLogger(LogViewer.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
@@ -331,7 +401,6 @@ public class LogViewer extends javax.swing.JFrame
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         flashBoard();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -535,4 +604,40 @@ public class LogViewer extends javax.swing.JFrame
     private javax.swing.JTextArea taLog;
     private javax.swing.JTextField tfFilePath;
     // End of variables declaration//GEN-END:variables
+}
+
+class RunCommand extends Thread
+{
+
+    private static synchronized void runSinchronizedCommand(String commandLine)
+    {
+        try
+        {
+            appendLog(String.format("Running command: '$ %s'", commandLine));
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec(commandLine);
+            appendLog(new BufferedReader(new InputStreamReader(pr.getErrorStream())).lines().collect(Collectors.joining("\n")));
+            appendLog(new BufferedReader(new InputStreamReader(pr.getInputStream())).lines().collect(Collectors.joining("\n")));
+            Thread.sleep(1000);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(LogViewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(RunCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private final String commandLine;
+
+    public RunCommand(String commandLine)
+    {
+        this.commandLine = commandLine;
+    }
+
+    public void run()
+    {
+        runSinchronizedCommand(commandLine);
+    }
 }

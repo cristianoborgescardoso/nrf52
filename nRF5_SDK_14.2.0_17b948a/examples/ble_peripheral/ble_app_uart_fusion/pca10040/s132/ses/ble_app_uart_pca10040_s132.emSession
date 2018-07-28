@@ -14,6 +14,7 @@
   <ProjectSessionItem path="ble_app_uart_fusion_pca10040_s132"/>
   <ProjectSessionItem path="ble_app_uart_fusion_pca10040_s132;ble_app_uart_fusion_pca10040_s132"/>
   <ProjectSessionItem path="ble_app_uart_fusion_pca10040_s132;ble_app_uart_fusion_pca10040_s132;Application"/>
+  <ProjectSessionItem path="ble_app_uart_fusion_pca10040_s132;ble_app_uart_fusion_pca10040_s132;nRF_BLE_Services"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -35,14 +36,15 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="97" y="965" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="954" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="945" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" debugPath="../../../main.c" selected="1" top="916" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="251" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/util/app_util.h" debugPath="../../../../../../components/libraries/util/app_util.h" selected="0" top="224" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="545" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/softdevice/s132/headers/ble_gap.h" debugPath="../../../../../../components/softdevice/s132/headers/ble_gap.h" selected="0" top="518" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="219" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/uart/app_uart_fifo.c" debugPath="../../../../../../components/libraries/uart/app_uart_fifo.c" selected="0" top="192" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="312" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/ble/ble_services/ble_nus/ble_nus.c" debugPath="../../../../../../components/ble/ble_services/ble_nus/ble_nus.c" selected="0" top="291" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="79" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../uicr_config.h" debugPath="../../../uicr_config.h" selected="0" top="68" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" debugPath="../config/sdk_config.h" selected="0" top="5794" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="311" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/ble/ble_services/ble_nus/ble_nus.c" debugPath="../../../../../../components/ble/ble_services/ble_nus/ble_nus.c" selected="0" top="291" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="80" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../uicr_config.h" debugPath="../../../uicr_config.h" selected="0" top="54" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5794" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" debugPath="../config/sdk_config.h" selected="0" top="5794" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="183" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/libraries/util/app_util_platform.h" debugPath="../../../../../../components/libraries/util/app_util_platform.h" selected="0" top="127" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1809" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../components/device/nrf52.h" debugPath="../../../../../../components/device/nrf52.h" selected="0" top="1659" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="ble_app_uart_fusion_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>
