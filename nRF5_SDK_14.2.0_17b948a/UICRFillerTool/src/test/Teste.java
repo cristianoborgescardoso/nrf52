@@ -25,7 +25,7 @@ public class Teste
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, JAXBException
     {
 //       System.out.println(unm2().getPeriodoXml.get(1).getSigla());
-        System.out.println(unm2().getInputDevicesXml().getDeviceXml().get(4).getDescription());
+        System.out.println(unm2().getDeviceXml().get(4).getDescription());
     }
 
     public static DeviceXmls unm2() throws JAXBException

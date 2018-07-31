@@ -2,6 +2,9 @@
 echo 'Erasing UICR...'
 nrfjprog -f NRF52 --eraseuicr
 echo 'Writing UICR Registers...'
+nrfjprog  -f NRF52  --memwr 0x10001080 --val 0x00000403
+nrfjprog  -f NRF52  --memwr 0x10001084 --val 0x01010c00
+nrfjprog  -f NRF52  --memwr 0x10001088 --val 0x05000300
 echo 'Reading UICR Registers...'
 nrfjprog -f NRF52 --memrd 0x10001080 --n 4
 nrfjprog -f NRF52 --memrd 0x10001084 --n 4

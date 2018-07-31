@@ -3,21 +3,6 @@
   <xs:element name="deviceXmls">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="inputDevicesXml"/>
-        <xs:element ref="outputDevicesXml"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="inputDevicesXml">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="deviceXml"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="outputDevicesXml">
-    <xs:complexType>
-      <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="deviceXml"/>
       </xs:sequence>
     </xs:complexType>
@@ -32,7 +17,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="id" type="xs:integer"/>
+  <xs:element name="id" type="xs:int"/>
   <xs:element name="name" type="xs:NCName"/>
   <xs:element name="description" type="xs:string"/>
   <xs:element name="ioClass" type="xs:NCName"/>

@@ -33,6 +33,7 @@ import javax.xml.bind.Unmarshaller;
 import uicrfillertool.Device;
 import util.Config;
 import static view.LogViewer.appendLog;
+import xml.DeviceXml;
 import xml.DeviceXmls;
 
 /**
@@ -197,7 +198,7 @@ public class LogViewer extends javax.swing.JFrame
 
         jSplitPane2.setRightComponent(jScrollPane2);
 
-        tfFilePath.setText("thirdyParty/devices.xml");
+        tfFilePath.setText("devices.xml");
         tfFilePath.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -305,7 +306,7 @@ public class LogViewer extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jButton2ActionPerformed
         try
         {
-            openFile(tfFilePath.getText());             
+            openFile(tfFilePath.getText());
         }
         catch (FileNotFoundException ex)
         {
@@ -371,12 +372,16 @@ public class LogViewer extends javax.swing.JFrame
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         DeviceXmls devices = (DeviceXmls) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
 
-        Config.inputDevices = devices.getInputDevicesXml().getDeviceXml();
-        Config.outputDevices = devices.getOutputDevicesXml().getDeviceXml();
-
-        for (int sensorNumber = 0; sensorNumber < Config.maxSensorNumber; sensorNumber++)
+        for (DeviceXml deviceXml : devices.getDeviceXml())
         {
-
+            if (deviceXml.getIoClass().equalsIgnoreCase(Config.input))
+            {
+                Config.inputDevices.add(deviceXml);
+            }
+            else if (deviceXml.getIoClass().equalsIgnoreCase(Config.output))
+            {
+                Config.outputDevices.add(deviceXml);
+            }
         }
 
         Device tempdevice;

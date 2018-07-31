@@ -135,7 +135,7 @@
     </Container>
     <Component class="javax.swing.JTextField" name="tfFilePath">
       <Properties>
-        <Property name="text" type="java.lang.String" value="thirdyParty/devices.xml"/>
+        <Property name="text" type="java.lang.String" value="devices.xml"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfFilePathActionPerformed"/>
