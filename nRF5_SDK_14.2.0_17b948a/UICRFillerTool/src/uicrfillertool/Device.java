@@ -6,7 +6,7 @@
 package uicrfillertool;
 
 import java.util.List;
-import view.logViewer.LogViewer;
+import view.LogViewer;
 
 /**
  *
@@ -72,10 +72,11 @@ public class Device
         {
             device.registryValueInHex = eightHexAllZero;//in case of this method be called more than once; 
             device.fillRegistryBytes();
-            LogViewer.appendLog(String.format("P.%d |function='%d'|name='%d'|  = 0x%x\n", device.getPinNumber(), device.getPinFunction(), device.getDeviceName(), device.getRegistryValueInHex()));
+            LogViewer.appendLog(String.format("P.%d |function='%d'|name='%d'|  = 0x%08x\n", device.getPinNumber(), device.getPinFunction(), device.getDeviceName(), device.getRegistryValueInHex()));
         });
+        LogViewer.appendLog(String.format("Adding the number of configurated devices in the first registry: '%d'", deviceList.size()));
         deviceList.get(0).replaceDigit(0, deviceList.size());//0x000000XX - The first value specify how many devices will be configurated        
-        LogViewer.appendLog(String.format("P.%d |function='%d'|name='%d'|  = 0x%x\n", deviceList.get(0).getPinNumber(), deviceList.get(0).getPinFunction(), deviceList.get(0).getDeviceName(), deviceList.get(0).getRegistryValueInHex()));
+        LogViewer.appendLog(String.format("P.%d |function='%d'|name='%d'|  = 0x%08x\n", deviceList.get(0).getPinNumber(), deviceList.get(0).getPinFunction(), deviceList.get(0).getDeviceName(), deviceList.get(0).getRegistryValueInHex()));
     }
 
     public int getRegistryValueInHex()
