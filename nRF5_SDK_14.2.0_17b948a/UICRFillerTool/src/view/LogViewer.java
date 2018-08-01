@@ -181,11 +181,11 @@ public class LogViewer extends javax.swing.JFrame
 
         jspNodes.setResizeWeight(0.6);
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("NRF52 Development Kit"));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "NRF52 Development Kit", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jScrollPane1.setToolTipText("NRF52 Development Kit");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/nrf52_dk_pinout_armmbed_enabled_v2.png"))); // NOI18N
-        jLabel2.setText("jLabel2");
+        jLabel2.setToolTipText("");
         jScrollPane1.setViewportView(jLabel2);
 
         jspNodes.setRightComponent(jScrollPane1);
@@ -234,7 +234,7 @@ public class LogViewer extends javax.swing.JFrame
             }
         });
 
-        cbInternalGridColums.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "4", "5", "8" }));
+        cbInternalGridColums.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "4", "5", "6", "7", "8" }));
         cbInternalGridColums.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)

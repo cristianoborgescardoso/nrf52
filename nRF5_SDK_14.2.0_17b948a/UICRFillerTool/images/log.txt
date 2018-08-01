@@ -1,0 +1,134 @@
+Encoding devices configuration...
+Generating command lines...
+Number of configurated devices: '4'
+P.3 |function='0'|name='2'|  = 0x03000200
+
+P.22 |function='0'|name='0'|  = 0x16000000
+
+P.26 |function='0'|name='7'|  = 0x1a000700
+
+P.13 |function='0'|name='5'|  = 0x0d000500
+
+Adding the number of configurated devices in the first registry: '4'
+P.3 |function='0'|name='2'|  = 0x03000204
+
+Erasing UICR...
+Running command: '$ nrfjprog -f NRF52 --eraseuicr'
+
+Erasing UICR flash area.
+Applying system reset.
+Writing UICR Registers...
+Running command: '$ nrfjprog  -f NRF52  --memwr 0x10001080 --val 0x03000204'
+
+Parsing parameters.
+Writing.
+Running command: '$ nrfjprog  -f NRF52  --memwr 0x10001084 --val 0x16000000'
+
+Parsing parameters.
+Writing.
+Running command: '$ nrfjprog  -f NRF52  --memwr 0x10001088 --val 0x1a000700'
+
+Parsing parameters.
+Writing.
+Running command: '$ nrfjprog  -f NRF52  --memwr 0x1000108c --val 0x0d000500'
+
+Parsing parameters.
+Writing.
+Reading UICR Registers...
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001080 --n 4'
+
+0x10001080: 03000204                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001084 --n 4'
+
+0x10001084: 16000000                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001088 --n 4'
+
+0x10001088: 1A000700                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x1000108c --n 4'
+
+0x1000108C: 0D000500                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001090 --n 4'
+
+0x10001090: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001094 --n 4'
+
+0x10001094: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x10001098 --n 4'
+
+0x10001098: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x1000109c --n 4'
+
+0x1000109C: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010a0 --n 4'
+
+0x100010A0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010a4 --n 4'
+
+0x100010A4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010a8 --n 4'
+
+0x100010A8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010ac --n 4'
+
+0x100010AC: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010b0 --n 4'
+
+0x100010B0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010b4 --n 4'
+
+0x100010B4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010b8 --n 4'
+
+0x100010B8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010bc --n 4'
+
+0x100010BC: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010c0 --n 4'
+
+0x100010C0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010c4 --n 4'
+
+0x100010C4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010c8 --n 4'
+
+0x100010C8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010cc --n 4'
+
+0x100010CC: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010d0 --n 4'
+
+0x100010D0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010d4 --n 4'
+
+0x100010D4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010d8 --n 4'
+
+0x100010D8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010dc --n 4'
+
+0x100010DC: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010e0 --n 4'
+
+0x100010E0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010e4 --n 4'
+
+0x100010E4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010e8 --n 4'
+
+0x100010E8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010ec --n 4'
+
+0x100010EC: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010f0 --n 4'
+
+0x100010F0: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010f4 --n 4'
+
+0x100010F4: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010f8 --n 4'
+
+0x100010F8: FFFFFFFF                              |....|
+Running command: '$ nrfjprog -f NRF52 --memrd 0x100010fc --n 4'
+
+0x100010FC: FFFFFFFF                              |....|
+Wrinting file 'writeUICR.sh'
