@@ -10,4 +10,4 @@ xjc devices.xsd -p xml
 sed  -i '$s/}.$/   @Override\n   public String toString()\n   {\n      return description;\n   }\n}/g' xml/DeviceXml.java
 
 cp xml/* ../src/xml/
-cp devices.xml ../
+#cp devices.xml ../
