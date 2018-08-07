@@ -1,5 +1,5 @@
 #!/bin/bash
-java -jar trang.jar devices.xml devices.xml devices.xsd
+java -jar trang.jar devices.xml devices.xsd
 
 #replacing xs:integer to xs:int, xs:integer generating BigInteger in Java, it is not necessary in this case.
 sed -i 's/xs:integer/xs:int/g' devices.xsd
